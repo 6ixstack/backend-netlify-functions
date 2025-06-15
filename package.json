@@ -1,0 +1,12 @@
+{
+  "name": "6ixstack-mailer-backend",
+  "version": "1.0.0",
+  "description": "Backend netlify functions package",
+  "scripts": {
+    "dev": "netlify dev",
+    "deploy": "netlify deploy --prod"
+  },
+  "dependencies": {
+    "nodemailer": "^6.9.0"
+  }
+}
