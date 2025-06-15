@@ -1,9 +1,34 @@
 import nodemailer from "nodemailer";
 
+const allowedOrigins = [
+  "https://6ixstack.com",
+  "https://6ixstack.netlify.app",
+  "http://localhost",
+  "http://127.0.0.1",
+];
+
 export async function handler(event) {
+  const origin = event.headers.origin || "";
+
+  // Handle CORS preflight (OPTIONS)
+  if (event.httpMethod === "OPTIONS") {
+    return {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": allowedOrigins.includes(origin) ? origin : "",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+      body: "OK",
+    };
+  }
+
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
+      headers: {
+        "Access-Control-Allow-Origin": allowedOrigins.includes(origin) ? origin : "",
+      },
       body: JSON.stringify({ message: "Method Not Allowed" }),
     };
   }
@@ -53,12 +78,18 @@ export async function handler(event) {
     await transporter.sendMail(mailOptions);
     return {
       statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": allowedOrigins.includes(origin) ? origin : "",
+      },
       body: JSON.stringify({ success: true }),
     };
   } catch (err) {
-    console.error("Error sending email:", err);
+    console.error("Email error:", err);
     return {
       statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": allowedOrigins.includes(origin) ? origin : "",
+      },
       body: JSON.stringify({ success: false, error: err.message }),
     };
   }
