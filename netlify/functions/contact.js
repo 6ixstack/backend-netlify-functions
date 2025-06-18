@@ -3,6 +3,7 @@ import nodemailer from "nodemailer";
 const allowedOrigins = [
   "https://6ixstack.com",
   "https://6ixstack.netlify.app",
+  "https://6ixstackbackend.netlify.app",
   "http://localhost",
   "http://localhost:3000",
   "http://127.0.0.1",
